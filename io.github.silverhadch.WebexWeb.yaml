@@ -1,0 +1,45 @@
+app-id: io.github.silverhadch.WebexWeb
+runtime: org.kde.Platform
+runtime-version: "6.10"
+sdk: org.kde.Sdk
+base: com.riverbankcomputing.PyQt.BaseApp
+base-version: "6.10"
+command: webexweb
+
+finish-args:
+  - "--share=ipc"
+  - "--share=network"
+  - "--socket=wayland"
+  - "--socket=fallback-x11"
+  - "--socket=pulseaudio"
+  - "--device=all"
+  - "--filesystem=xdg-download"
+  - "--filesystem=xdg-documents"
+  - "--filesystem=xdg-pictures"
+  - "--talk-name=org.freedesktop.Notifications"
+  - "--talk-name=org.kde.StatusNotifierWatcher"
+  - "--env=QTWEBENGINEPROCESS_PATH=/app/bin/QtWebEngineProcess"
+  - "--env=QTWEBENGINE_DICTIONARIES_PATH=/app/qtwebengine_dictionaries"
+
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - "*.la"
+  - "*.a"
+cleanup-commands:
+  - /app/cleanup-BaseApp.sh
+
+modules:
+  - name: webexweb
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 src/webexweb.py /app/bin/webexweb
+      - install -Dm644 data/io.github.silverhadch.WebexWeb.desktop
+          /app/share/applications/io.github.silverhadch.WebexWeb.desktop
+      - install -Dm644 data/io.github.silverhadch.WebexWeb.metainfo.xml
+          /app/share/metainfo/io.github.silverhadch.WebexWeb.metainfo.xml
+      - install -Dm644 data/io.github.silverhadch.WebexWeb.svg
+          /app/share/icons/hicolor/scalable/apps/io.github.silverhadch.WebexWeb.svg
+    sources:
+      - type: dir
+        path: .
