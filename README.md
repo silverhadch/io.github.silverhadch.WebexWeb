@@ -5,7 +5,17 @@ PyQt6 and QtWebEngine.
 
 Independent project, not affiliated with Cisco. Webex is a trademark of Cisco.
 
-## Build
+## Install
+
+Add the repository and install:
+
+```bash
+flatpak remote-add --if-not-exists webexweb \
+  https://silverhadch.github.io/io.github.silverhadch.WebexWeb/index.flatpakrepo
+flatpak install webexweb io.github.silverhadch.WebexWeb
+```
+
+## Build locally
 
 Install the toolchain and runtimes once:
 
@@ -23,8 +33,6 @@ Build and install for the current user:
 Run:
 
     flatpak run io.github.silverhadch.WebexWeb
-
-It also appears in the application menu as Webex Web.
 
 ## License
 

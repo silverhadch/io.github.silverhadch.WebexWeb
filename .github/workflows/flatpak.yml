@@ -1,0 +1,43 @@
+name: Flatpak
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  flatpak:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/andyholmes/flatter/kde:6.10
+      options: --privileged
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup GPG
+        id: gpg
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: Build
+        uses: andyholmes/flatter@main
+        with:
+          files: |
+            io.github.silverhadch.WebexWeb.yaml
+          arch: x86_64
+          flatpak-builder-args: --install-deps-from=flathub
+          upload-pages-artifact: true
+          gpg-sign: ${{ steps.gpg.outputs.fingerprint }}
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
