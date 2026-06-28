@@ -1,10 +1,12 @@
-# Webex Web
+# <img src="data/io.github.silverhadch.WebexWeb.svg" alt="" width="30" align="top"> Webex Web
+
 > *A working Linux client for Webex – because the official app is broken.*
 
-Webex in its own window, not a browser tab. Built with Electron.
+Webex in its own window, with desktop Integration. Built with Electron.
 
-> **Not affiliated with, endorsed by, or connected to Cisco in any way.**
-> Webex is a trademark of Cisco Systems, Inc.
+> **This is an unofficial project. It is not made by, affiliated with, endorsed by, sponsored by, or connected to Cisco in any way.**
+>
+> "Webex" and the Webex logo are trademarks of Cisco Systems, Inc. This app only wraps the public web client (web.webex.com) in a window — it ships no Cisco code, assets, or branding, and the icon is an original mark, not Cisco's logo. If you want the official client, get it from Cisco.
 
 ![Webex Web](data/screenshot.png)
 
