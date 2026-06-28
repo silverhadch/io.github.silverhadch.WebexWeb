@@ -10,7 +10,7 @@ jobs:
     name: Build & Deploy
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/andyholmes/flatter/kde:6.10
+      image: ghcr.io/andyholmes/flatter/freedesktop:25.08
       options: --privileged
     permissions:
       pages: write
@@ -21,6 +21,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install unzip
+        run: |
+          apt-get update && apt-get install -y unzip || \
+          dnf install -y unzip || yum install -y unzip || \
+          apk add unzip
 
       - name: Setup GPG
         id: gpg

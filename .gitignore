@@ -1,2 +1,5 @@
 build-dir/
 .flatpak-builder/
+node_modules/
+*.flatpak
+.repo/

@@ -1,10 +1,11 @@
 app-id: io.github.silverhadch.WebexWeb
-runtime: org.kde.Platform
-runtime-version: "6.10"
-sdk: org.kde.Sdk
-base: com.riverbankcomputing.PyQt.BaseApp
-base-version: "6.10"
+runtime: org.freedesktop.Platform
+runtime-version: "25.08"
+sdk: org.freedesktop.Sdk
+base: org.electronjs.Electron2.BaseApp
+base-version: "25.08"
 command: webexweb
+separate-locales: false
 
 finish-args:
   - "--share=ipc"
@@ -13,33 +14,40 @@ finish-args:
   - "--socket=fallback-x11"
   - "--socket=pulseaudio"
   - "--device=all"
+  - "--talk-name=org.freedesktop.portal.Desktop"
+  - "--talk-name=org.freedesktop.Notifications"
+  - "--talk-name=org.kde.StatusNotifierWatcher"
+  - "--talk-name=org.freedesktop.ScreenSaver"
   - "--filesystem=xdg-download"
   - "--filesystem=xdg-documents"
   - "--filesystem=xdg-pictures"
-  - "--talk-name=org.freedesktop.Notifications"
-  - "--talk-name=org.kde.StatusNotifierWatcher"
-  - "--env=QTWEBENGINEPROCESS_PATH=/app/bin/QtWebEngineProcess"
-  - "--env=QTWEBENGINE_DICTIONARIES_PATH=/app/qtwebengine_dictionaries"
-
-cleanup:
-  - /include
-  - /lib/pkgconfig
-  - "*.la"
-  - "*.a"
-cleanup-commands:
-  - /app/cleanup-BaseApp.sh
 
 modules:
   - name: webexweb
     buildsystem: simple
     build-commands:
-      - install -Dm755 src/webexweb.py /app/bin/webexweb
+      - rsvg-convert -w 256 -h 256
+          data/io.github.silverhadch.WebexWeb.svg
+          -o icon.png
+      - cp -a electron "${FLATPAK_DEST}/electron"
+      - install -Dm644 src/main.js      "${FLATPAK_DEST}/main/main.js"
+      - install -Dm644 src/package.json "${FLATPAK_DEST}/main/package.json"
+      - install -Dm755 webexweb.sh      "${FLATPAK_DEST}/bin/webexweb"
       - install -Dm644 data/io.github.silverhadch.WebexWeb.desktop
-          /app/share/applications/io.github.silverhadch.WebexWeb.desktop
+          "${FLATPAK_DEST}/share/applications/io.github.silverhadch.WebexWeb.desktop"
       - install -Dm644 data/io.github.silverhadch.WebexWeb.metainfo.xml
-          /app/share/metainfo/io.github.silverhadch.WebexWeb.metainfo.xml
+          "${FLATPAK_DEST}/share/metainfo/io.github.silverhadch.WebexWeb.metainfo.xml"
       - install -Dm644 data/io.github.silverhadch.WebexWeb.svg
-          /app/share/icons/hicolor/scalable/apps/io.github.silverhadch.WebexWeb.svg
+          "${FLATPAK_DEST}/share/icons/hicolor/scalable/apps/io.github.silverhadch.WebexWeb.svg"
+      - install -Dm644 icon.png
+          "${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/io.github.silverhadch.WebexWeb.png"
     sources:
+      - type: archive
+        only-arches:
+          - x86_64
+        url: https://github.com/electron/electron/releases/download/v36.9.5/electron-v36.9.5-linux-x64.zip
+        sha256: 52d6364aeed68116320f8cd6f7d7b6ad185da011ff212755f18c604696628616
+        dest: electron
+        strip-components: 0
       - type: dir
         path: .

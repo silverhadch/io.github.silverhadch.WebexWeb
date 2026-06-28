@@ -1,10 +1,9 @@
-#!/usr/bin/env xdg-open
 [Desktop Entry]
 Type=Application
 Name=Webex Web
 GenericName=Video Conferencing
 Comment=Webex web app in a dedicated window
-Exec=webexweb
+Exec=webexweb %U
 Icon=io.github.silverhadch.WebexWeb
 Terminal=false
 Categories=Network;InstantMessaging;VideoConference;
